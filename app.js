@@ -2,6 +2,9 @@ const express = require("express");
 const config = require("config");
 const mongoose = require("mongoose");
 
+// const {MONGOURI} = require('./config/default')
+
+
 const app = express();
 app.use(express.json({ extended: true }));
 
