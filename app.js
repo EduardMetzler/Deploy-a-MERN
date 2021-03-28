@@ -10,7 +10,7 @@ app.use("/api/create", require("./routes/create.routes"));
 app.use("/api/myEntry", require("./routes/allTexts.routes"));
 app.use("/api/oneEntry", require("./routes/oneEntry.routes"));
 
-const PORT = config.get("port") || 5000;
+const PORT = process.env.PORT || 5000;
 async function start() {
   try {
     await mongoose.connect(config.get("mongoUri"), {
@@ -18,6 +18,14 @@ async function start() {
       useUnifiedTopology: true,
       useCreateIndex: true
     });
+    if(process.env.NODE_ENV =="production"){
+      app.use(express.static("client/build"))
+      const path = require(`path`)
+      app.get("*",(req,res)=>{
+        res.sendFile(path.resolve(__dirname,'client','build','index.html'))
+      })
+
+    }
     app.listen(PORT, () =>
       console.log(`App has been started on port ${PORT}... `)
     );
